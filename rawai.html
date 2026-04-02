@@ -82,9 +82,18 @@ nav.scrolled{border-bottom-color:var(--line);}
 
 /* USER LIST */
 .user-list{list-style:none;display:flex;flex-direction:column;gap:16px;margin:24px 0;}
-.user-item{display:flex;gap:16px;align-items:flex-start;}
+.user-list li{display:flex;flex-direction:row;align-items:flex-start;gap:16px;}
 .user-dot{min-width:28px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:flex-start;}
 .user-text{font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.7;}
+/* PERSONA CARDS */
+.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:32px 0;}
+.persona-card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:32px;}
+.persona-img{width:72px;height:72px;border-radius:50%;overflow:hidden;margin-bottom:20px;background:var(--accent-light);}
+.persona-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.persona-img .img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.persona-card-name{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:500;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em;}
+.persona-card-role{font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+.persona-card-desc{font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.75;}
 
 /* DIFFERENTIATION BLOCK */
 .diff-block{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:36px;margin:32px 0;}
@@ -160,7 +169,7 @@ footer{border-top:1px solid var(--line);padding:28px 60px;margin-top:60px;displa
   <!-- OVERVIEW -->
   <div class="case-section reveal">
     <p class="section-label">Overview</p>
-    <p class="section-body">RawAIImages is a stock image platform focused on AI-generated visuals. Unlike traditional stock platforms, it creates a dedicated space for creators to upload raw, imperfect AI images — allowing others to discover, refine, and reuse them.</p>
+    <p class="section-body">Raw AI Images is a stock image platform focused on AI-generated visuals. Unlike traditional stock platforms, it creates a dedicated space for creators to upload raw, imperfect AI images — allowing others to discover, refine, and reuse them.</p>
      <!--<div class="case-img" style="margin-top:40px;">
        <img src="raw-image2.jpg" alt="Platform overview" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
       <div class="img-ph tall" style="display:none;">Overview — raw-image2.jpg</div>
@@ -184,18 +193,34 @@ footer{border-top:1px solid var(--line);padding:28px 60px;margin-top:60px;displa
     </div>
 
     <p class="sub-heading">Target Users</p>
-    <ul class="user-list">
-      <li><span class="user-dot">1</span><span class="user-text">Creators generating AI images who want to share or repurpose unused outputs</span></li>
-      <li><span class="user-dot">2</span><span class="user-text">Designers and marketers looking for unique, ready-to-use visuals</span></li>
-      <li><span class="user-dot">3</span><span class="user-text">AI enthusiasts exploring new creative workflows</span></li>
-    </ul>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="persona-img">
+          <img src="Avatar4.jpg" alt="Persona 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="img-ph" style="display:none;">👤</div>
+        </div>
+        <div class="persona-card-name">The Creator</div>
+        <div class="persona-card-role">AI Image Generator</div>
+        <p class="persona-card-desc">Generates AI images and wants to share or repurpose unused outputs. Needs an easy way to upload and monetise their work.</p>
+      </div>
+      <div class="persona-card">
+        <div class="persona-img">
+          <img src="Avatar5.jpg" alt="Persona 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="img-ph" style="display:none;">👤</div>
+        </div>
+        <div class="persona-card-name">The Designer</div>
+        <div class="persona-card-role">Designer & Marketer</div>
+        <p class="persona-card-desc">Looking for diverse and unique visuals that go beyond traditional stock imagery. Needs quick access to ready-to-use images for their projects.</p>
+      </div>
+    </div>
   </div>
+
 
   <!-- DEFINE -->
   <div class="case-section reveal">
     <p class="section-label">Define</p>
     <h2 class="section-heading">Solution & Product Decisions</h2>
-    <p class="section-body">RawAIImages provides a platform where users can upload, browse, and refine AI-generated images. By combining advanced search, basic editing tools, and community-driven feedback, the platform enables unfinished images to gain new value.</p>
+    <p class="section-body">Raw AI Images provides a platform where users can upload, browse, and refine AI-generated images. By combining advanced search, basic editing tools, and community-driven feedback, the platform enables unfinished images to gain new value.</p>
 
     <p class="sub-heading">Key Product Decisions</p>
     <div class="three-grid">
@@ -225,7 +250,7 @@ footer{border-top:1px solid var(--line);padding:28px 60px;margin-top:60px;displa
 
     <p class="sub-heading">Differentiation</p>
     <div class="diff-block">
-      <p>Unlike platforms such as <span class="diff-highlight">Unsplash</span> or <span class="diff-highlight">Shutterstock</span>, which focus on polished final images, RawAIImages centers around raw, imperfect AI-generated content.</p>
+      <p>Unlike platforms such as <span class="diff-highlight">Unsplash</span> or <span class="diff-highlight">Shutterstock</span>, which focus on polished final images, Raw AI Images centers around raw, imperfect AI-generated content.</p>
       <p>The platform introduces collaboration and refinement as core features, positioning unfinished assets as <span class="diff-highlight">opportunities rather than waste</span>.</p>
     </div>
   </div>
@@ -269,13 +294,13 @@ footer{border-top:1px solid var(--line);padding:28px 60px;margin-top:60px;displa
 </div>
 
 <div class="case-nav">
-  <a href="deporteslaser.html" class="case-nav-link prev">
+  <a href="aptivio.html" class="case-nav-link prev">
     <span class="case-nav-dir">← Previous</span>
-    <span class="case-nav-name">Deportes Laser</span>
+    <span class="case-nav-name">Aptivio</span>
   </a>
-  <a href="index.html" class="case-nav-link next">
-    <span class="case-nav-dir">All Work →</span>
-    <span class="case-nav-name">Back to Portfolio</span>
+  <a href="deporteslaser.html" class="case-nav-link next">
+    <span class="case-nav-dir">Next →</span>
+    <span class="case-nav-name">Deportes Laser</span>
   </a>
 </div>
 
