@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sparkle — Isabel Fraga</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#F5F5F5;--white:#FFFFFF;--ink:#1A1714;--ink-soft:#4A4540;
+  --ink-muted:#9A948E;--accent:#315CC0;--accent-light:#C8D8ED;--line:#E2DBD4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:16px;line-height:1.6;cursor:none;}
+
+.cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;transition:width .3s,height .3s,opacity .3s;}
+.cursor.hover{width:18px;height:18px;}
+.cursor-ring.hover{width:52px;height:52px;opacity:.2;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:28px 60px;background:rgba(245,245,245,0.92);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s;}
+nav.scrolled{border-bottom-color:var(--line);}
+.nav-links{display:flex;gap:48px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-soft);text-decoration:none;letter-spacing:.04em;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a:hover::after{width:100%;}
+
+/* HERO */
+.case-hero{padding:140px 80px 80px;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.case-tag{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0;animation:fadeUp .7s ease .1s forwards;}
+.case-title{font-family:'Unbounded',sans-serif;font-size:clamp(36px,5vw,72px);font-weight:500;letter-spacing:-.03em;line-height:1.05;color:var(--ink);margin-bottom:24px;opacity:0;animation:fadeUp .7s ease .2s forwards;}
+.case-subtitle{font-size:clamp(15px,1.5vw,18px);color:var(--ink-soft);font-weight:300;max-width:660px;line-height:1.8;margin-bottom:60px;opacity:0;animation:fadeUp .7s ease .3s forwards;}
+.case-meta{display:flex;gap:60px;justify-content:center;flex-wrap:wrap;padding:32px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:100%;opacity:0;animation:fadeUp .7s ease .4s forwards;}
+.meta-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+.meta-value{font-size:14px;font-weight:400;color:var(--ink-soft);}
+
+/* HERO IMAGE */
+.hero-img-wrap{width:100%;max-width:1200px;margin:60px auto 0;padding:0 80px;opacity:0;animation:fadeUp .8s ease .5s forwards;}
+.hero-img-wrap img{width:100%;border-radius:12px;display:block;box-shadow:0 24px 80px rgba(0,0,0,.15);}
+.hero-img-wrap .img-placeholder{width:100%;aspect-ratio:16/7;border-radius:12px;background:linear-gradient(135deg,#1a2a1a 0%,#2d5c2d 40%,#5BDB6F 100%);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:36px;font-weight:600;letter-spacing:.08em;color:#5BDB6F;}
+
+/* CONTENT */
+.case-content{max-width:1200px;margin:0 auto;padding:0 80px;}
+
+/* SECTIONS */
+.case-section{padding:80px 0 0;opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.case-section.visible{opacity:1;transform:none;}
+.section-label{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.25;}
+.section-heading{font-family:'Unbounded',sans-serif;font-size:clamp(22px,3vw,38px);font-weight:500;letter-spacing:-.02em;color:var(--ink);margin-bottom:24px;line-height:1.15;}
+.section-body{font-size:15px;color:var(--ink-soft);line-height:1.85;font-weight:300;max-width:760px;}
+.sub-heading{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:500;color:var(--ink);margin:52px 0 16px;letter-spacing:-.01em;}
+
+/* IMAGES */
+.case-img{width:100%;margin:40px 0;border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.08);}
+.case-img img{width:100%;display:block;}
+.case-img .img-ph{width:100%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;}
+.case-img .img-ph.tall{aspect-ratio:16/9;}
+.case-img .img-ph.short{aspect-ratio:21/9;}
+
+/* DESK RESEARCH CARDS */
+.research-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin:36px 0;}
+.research-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:28px;}
+.research-card-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.research-card-text{font-size:14px;color:var(--ink-soft);line-height:1.75;font-weight:300;}
+
+/* STAT CIRCLES */
+.stats-row{display:flex;gap:24px;flex-wrap:wrap;margin:40px 0;align-items:flex-start;justify-content:space-between;}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:20px;flex:1;min-width:180px;}
+.stat-circle{
+  width:180px;height:180px;border-radius:50%;
+  background:#1e2227;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;flex-shrink:0;
+  box-shadow:4px 6px 18px rgba(0,0,0,0.35);
+}
+.stat-circle svg{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotate(-90deg);}
+.stat-circle svg circle.track{fill:none;stroke:#373e4d;stroke-width:10;}
+.stat-circle svg circle.fill{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;stroke-dasharray:459;stroke-dashoffset:459;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);}
+.stat-circle.animated svg circle.fill{stroke-dashoffset:var(--offset);}
+.stat-num{font-family:'Unbounded',sans-serif;font-size:32px;font-weight:500;color:#ffffff;letter-spacing:-.02em;position:relative;z-index:1;}
+.stat-text{text-align:center;font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.6;max-width:200px;}
+.stat-text strong{color:var(--accent);font-weight:500;}
+
+/* MOSCOW */
+.moscow-wrap{margin:32px 0;}
+.moscow-legend{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);font-weight:400;letter-spacing:.02em;}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.moscow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.moscow-quadrant{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:28px;}
+.moscow-q-title{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;color:var(--ink);letter-spacing:.06em;margin-bottom:20px;}
+.moscow-cards{display:flex;flex-wrap:wrap;gap:10px;}
+.moscow-card{padding:12px 14px;border-radius:8px;font-size:12px;font-weight:400;color:#121212;line-height:1.4;width:120px;text-align:center;}
+
+/* COLOUR PALETTE */
+.palette-wrap{margin:32px 0;display:flex;flex-direction:column;gap:16px;}
+.palette-row{display:flex;gap:16px;flex-wrap:wrap;}
+.palette-swatch{
+  flex:1;min-width:140px;height:120px;border-radius:12px;
+  display:flex;align-items:flex-end;padding:12px 14px;
+  position:relative;
+}
+.palette-swatch span{font-size:12px;font-weight:500;color:#121212;font-family:'DM Sans',sans-serif;letter-spacing:.02em;}
+.palette-swatch.dark span{color:#9A948E;}
+
+/* PROTOTYPE LINK */
+.prototype-link{display:inline-flex;align-items:center;gap:10px;margin:28px 0;padding:14px 28px;background:var(--accent);color:#fff;text-decoration:none;border-radius:100px;font-size:13px;font-weight:500;letter-spacing:.04em;transition:opacity .2s;}
+.prototype-link:hover{opacity:.8;}
+
+/* USER TESTING */
+.testing-block{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:36px;margin:32px 0;}
+.testing-block p{font-size:15px;color:var(--ink-soft);line-height:1.85;font-weight:300;}
+.testing-block p+p{margin-top:16px;}
+.testing-highlight{color:var(--ink);font-weight:500;}
+
+/* NAV BULLETS */
+.nav-bullets{list-style:none;display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+.nav-bullets li{display:flex;gap:16px;align-items:flex-start;}
+.nav-bullet-num{min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-bullet-text{font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.7;}
+.nav-bullet-text strong{color:var(--ink);font-weight:500;}
+
+/* PREV NEXT */
+.case-nav{display:flex;justify-content:space-between;align-items:center;padding:60px 80px;max-width:1200px;margin:80px auto 0;border-top:1px solid var(--line);}
+.case-nav-link{text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:opacity .2s;}
+.case-nav-link:hover{opacity:.6;}
+.case-nav-dir{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);}
+.case-nav-name{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:500;color:var(--ink);letter-spacing:-.02em;}
+.case-nav-link.next{text-align:right;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:28px 60px;margin-top:60px;display:flex;align-items:center;justify-content:center;}
+.footer-links{display:flex;gap:40px;list-style:none;}
+.footer-links a{font-size:12px;color:var(--ink-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s;}
+.footer-links a:hover{color:var(--accent);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:768px){
+  nav{padding:20px 24px;}
+  .nav-links{gap:20px;}
+  .case-hero,.hero-img-wrap,.case-content{padding-left:24px;padding-right:24px;}
+  .case-meta{gap:28px;}
+  .research-grid{grid-template-columns:1fr;}
+  .stats-row{justify-content:center;}
+  .case-nav{padding:40px 24px;flex-direction:column;gap:32px;text-align:center;}
+  .case-nav-link.next{text-align:center;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <ul class="nav-links">
+    <li><a href="index.html">Work</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="Isabel-fraga-cv.pdf" download>Resume</a></li>
+  </ul>
+</nav>
+
+<div class="case-hero">
+  <p class="case-tag">Mobile App · IoT · Gamification</p>
+  <h1 class="case-title">Sparkle</h1>
+  <p class="case-subtitle">A mobile app designed to optimize the use of solar energy by monitoring energy production and consumption, with a gamification element where users earn tokens for learning energy-saving tips and spend them on eco-friendly products.</p>
+  <div class="case-meta">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">UX/UI Designer</div></div>
+    <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Mobile App · IoT</div></div>
+    <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-value">Figma · Maze</div></div>
+    <div class="meta-item"><div class="meta-label">Year</div><div class="meta-value">2022</div></div>
+  </div>
+</div>
+
+<div class="hero-img-wrap">
+  <video src="sp-video.mp4" autoplay muted loop playsinline style="width:100%;border-radius:12px;display:block;box-shadow:0 24px 80px rgba(0,0,0,.15);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+  </video>
+  <div class="img-placeholder" style="display:none;">SPARKLE</div>
+</div>
+
+<div class="case-content">
+
+  <!-- OVERVIEW -->
+   <div class="case-section reveal">
+    <p class="section-label">Overview</p>
+    <p class="section-body">Sparkle is a mobile app meant to optimize the use of solar energy by monitoring energy production and consumption, with a gamification element, where users can earn tokens for learning energy-saving tips and spend them on eco-friendly products.</p>
+    <!--<div class="case-img" style="margin-top:40px;">
+      <img src="sp-image2.jpg" alt="Sparkle app screens" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">App Overview — sp-image2.jpg</div>
+    </div>-->
+  </div>
+
+  <!-- DISCOVER -->
+  <div class="case-section reveal">
+    <p class="section-label">Discover</p>
+    <h2 class="section-heading">Desk Research</h2>
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="research-card-label">Rising energy prices</div>
+        <p class="research-card-text">Energy prices have been rising since 2021 due to a combination of factors such as Russia withholding gas supplies to Europe.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-card-label">Solar energy boom</div>
+        <p class="research-card-text">Solar power is undergoing a boom, as the energy crisis drives a shift to renewable energy, and is expected to surpass coal power by 2027.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-card-label">Solar energy limitations</div>
+        <p class="research-card-text">Several factors can affect the energy production of solar panels, such as time of day and the weather. People with solar panels often rely on the electrical grid to meet their energy needs.</p>
+      </div>
+    </div>
+
+    <p class="sub-heading">Survey — 152 participants</p>
+    <div class="stats-row">
+
+      <div class="stat-item">
+        <div class="stat-circle" data-pct="89">
+          <svg viewBox="0 0 180 180"><circle class="track" cx="90" cy="90" r="73"/><circle class="fill" cx="90" cy="90" r="73"/></svg>
+          <span class="stat-num">89%</span>
+        </div>
+        <p class="stat-text">Have noticed on their bill the <strong>electricity price increase</strong></p>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-circle" data-pct="67">
+          <svg viewBox="0 0 180 180"><circle class="track" cx="90" cy="90" r="73"/><circle class="fill" cx="90" cy="90" r="73"/></svg>
+          <span class="stat-num">67%</span>
+        </div>
+        <p class="stat-text">Takes into account the <strong>climate impact</strong> when consuming energy</p>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-circle" data-pct="60">
+          <svg viewBox="0 0 180 180"><circle class="track" cx="90" cy="90" r="73"/><circle class="fill" cx="90" cy="90" r="73"/></svg>
+          <span class="stat-num">60%</span>
+        </div>
+        <p class="stat-text">Are interested on installing <strong>solar panels</strong> or already have them</p>
+      </div>
+
+    </div>
+
+    <!-- <div class="case-img reveal">
+      <img src="sp-image3.jpg" alt="Survey results" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">Survey Results — sp-image3.jpg</div>
+    </div>
+  </div> -->
+
+  <!-- DEFINE -->
+  <div class="case-section reveal">
+    <p class="section-label">Define</p>
+    <h2 class="section-heading">User Persona</h2>
+    <div class="case-img reveal">
+      <img src="sp-image4.jpg" alt="User persona Laura Gómez" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">User Persona — sp-image4.jpg</div>
+    </div>
+
+    <p class="sub-heading">MoSCoW — Impact & Effort</p>
+    <div class="moscow-wrap reveal">
+      <!-- Legend -->
+      <div class="moscow-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#DAFA50"></span>High impact, high effort</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#709EFF"></span>High impact, low effort</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#FFA753"></span>Low impact, high effort</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#EC87FF"></span>Low impact, low effort</span>
+      </div>
+      <!-- Grid -->
+      <div class="moscow-grid">
+        <div class="moscow-quadrant">
+          <div class="moscow-q-title">MUST-HAVES</div>
+          <div class="moscow-cards">
+            <div class="moscow-card" style="background:#DAFA50">Monitor solar energy production</div>
+            <div class="moscow-card" style="background:#DAFA50">Monitor energy consumption</div>
+            <div class="moscow-card" style="background:#DAFA50">Monitor energy imported from the grid</div>
+            <div class="moscow-card" style="background:#DAFA50">Monitor energy exported to the grid</div>
+            <div class="moscow-card" style="background:#DAFA50">Earn tokens for learning energy-saving tips</div>
+            <div class="moscow-card" style="background:#DAFA50">Redeem tokens on discounts on partner's eco-friendly products</div>
+          </div>
+        </div>
+        <div class="moscow-quadrant">
+          <div class="moscow-q-title">SHOULD-HAVES</div>
+          <div class="moscow-cards">
+            <div class="moscow-card" style="background:#EC87FF">Customizable settings and preferences</div>
+            <div class="moscow-card" style="background:#709EFF">Notifications to optimize solar consumption</div>
+          </div>
+        </div>
+        <div class="moscow-quadrant">
+          <div class="moscow-q-title">COULD-HAVES</div>
+          <div class="moscow-cards">
+            <div class="moscow-card" style="background:#EC87FF">Social features to share progress and compete with friends</div>
+            <div class="moscow-card" style="background:#EC87FF">Personalized recommendations for energy saving products</div>
+          </div>
+        </div>
+        <div class="moscow-quadrant">
+          <div class="moscow-q-title">WON'T-HAVES</div>
+          <div class="moscow-cards">
+            <div class="moscow-card" style="background:#DAFA50">Monitor the consumption of smart home devices</div>
+            <div class="moscow-card" style="background:#FFA753">Gamification elements beyond token rewards</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDEATE -->
+  <div class="case-section reveal">
+    <p class="section-label">Ideate</p>
+    <h2 class="section-heading">Crazy 8</h2>
+    <p class="section-body">The Crazy 8s method was used to brainstorm ideas for the prototype. This exercise helped explore different directions, figure out the bottom navigation and main screens, and ultimately focus on the best ideas. It provided a much clearer picture of the overall prototype structure and flow.</p>
+    <div class="case-img reveal">
+      <img src="sp-image6.jpg" alt="Crazy 8s sketches" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">Crazy 8s — sp-image6.jpg</div>
+    </div>
+    <p class="section-body">We agreed on keeping the bottom navigation to a minimum of 3 destinations:</p>
+    <ul class="nav-bullets">
+      <li><span class="nav-bullet-num">1</span><span class="nav-bullet-text"><strong>Home tab</strong> with energy tracking information and sun's set and rise times.</span></li>
+      <li><span class="nav-bullet-num">2</span><span class="nav-bullet-text"><strong>Token tab</strong> with ways to earn tokens and deals to spend them.</span></li>
+      <li><span class="nav-bullet-num">3</span><span class="nav-bullet-text"><strong>Settings tab</strong> to manage user preferences and system configuration changes.</span></li>
+    </ul>
+  </div>
+
+  <!-- DESIGN -->
+  <div class="case-section reveal">
+    <p class="section-label">Design</p>
+    <h2 class="section-heading">Mid-fi Prototype</h2>
+    <div class="case-img reveal">
+      <img src="sp-image7.jpg" alt="Mid-fi prototype" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">Mid-fi Prototype — sp-image7.jpg</div>
+    </div>
+
+    <p class="sub-heading">User Testing</p>
+    <div class="testing-block">
+      <p>During user testing, an issue was identified with the tokens screen. <span class="testing-highlight">Some users found the amount of information overwhelming.</span></p>
+      <p>The Earn and Spend tabs were added to differentiate between the options for earning and spending tokens, reducing the information on screen.</p>
+    </div>
+    <div class="case-img reveal">
+      <img src="sp-image8.jpg" alt="User testing iterations" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">User Testing Iterations — sp-image8.jpg</div>
+    </div>
+
+    <p class="sub-heading">Colour Palette</p>
+    <div class="palette-wrap reveal">
+      <div class="palette-row">
+        <div class="palette-swatch" style="background:#DAFA50"><span>#DAFA50</span></div>
+        <div class="palette-swatch" style="background:#709EFF"><span>#709EFF</span></div>
+        <div class="palette-swatch" style="background:#FFA753"><span>#FFA753</span></div>
+        <div class="palette-swatch" style="background:#EC87FF"><span>#EC87FF</span></div>
+        <div class="palette-swatch" style="background:#95FFA0"><span>#95FFA0</span></div>
+      </div>
+      <div class="palette-row">
+        <div class="palette-swatch dark" style="background:#121212"><span>#121212</span></div>
+        <div class="palette-swatch" style="background:#000000;border:1px solid #2e2e2e"><span style="color:#fff">#000000</span></div>
+        <div class="palette-swatch" style="background:#B8B8B8"><span>#B8B8B8</span></div>
+      </div>
+      <div class="palette-row">
+        <div class="palette-swatch dark" style="background:#16181C"><span>#16181C</span></div>
+        <div class="palette-swatch dark" style="background:#282B32"><span>#282B32</span></div>
+        <div class="palette-swatch dark" style="background:#3E424E"><span>#3E424E</span></div>
+      </div>
+    </div>
+
+    <p class="sub-heading">Typography</p>
+    <div class="case-img reveal">
+      <img src="sp-image10.jpg" alt="Typography" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph short" style="display:none;">Typography — sp-image10.jpg</div>
+    </div>
+
+    <p class="sub-heading">Hi-fi Prototype</p>
+    <div class="case-img reveal">
+      <img src="sp-image11.jpg" alt="Hi-fi prototype" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="img-ph tall" style="display:none;">Hi-fi Prototype — sp-image11.jpg</div>
+    </div>
+    <div style="text-align:center;margin:16px 0 48px;">
+      <a href="https://www.figma.com/proto/Ntb3uY74XawFMyDOSc4HeL/Proyecto-final--Copy-?page-id=379%3A4709&node-id=525-9840&viewport=1379%2C373%2C0.15&scaling=scale-down&starting-point-node-id=379%3A6123&t=sZATbO4qKP9I6Hs5-1" class="prototype-link" target="_blank">View Prototype</a>
+    </div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="case-section reveal">
+    <p class="section-label">Conclusion</p>
+    <h2 class="section-heading">Key takeaways</h2>
+    <p class="section-body">To conclude, the successful completion of this UX design project was driven by gathering user feedback and conducting testing throughout the design process. This iterative approach allowed for early identification and resolution of potential issues, ensuring the final design effectively met the needs of the target audience.</p>
+  </div>
+
+</div>
+
+<div class="case-nav">
+  <a href="index.html" class="case-nav-link prev">
+    <span class="case-nav-dir">← Back</span>
+    <span class="case-nav-name">All Work</span>
+  </a>
+  <a href="aptivio.html" class="case-nav-link next">
+    <span class="case-nav-dir">Next →</span>
+    <span class="case-nav-name">Aptivio</span>
+  </a>
+</div>
+
+<footer>
+  <ul class="footer-links">
+    <li><a href="index.html">Work</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="Isabel-fraga-cv.pdf" download>Resume</a></li>
+  </ul>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('hover');ring.classList.add('hover');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('hover');ring.classList.remove('hover');});
+});
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40));
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal,.case-section').forEach(el=>obs.observe(el));
+
+// Donut circles animation
+const circumference = 2 * Math.PI * 73; // r=73
+const donutObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el = e.target;
+      const pct = parseFloat(el.dataset.pct) / 100;
+      const offset = circumference * (1 - pct);
+      el.style.setProperty('--offset', offset);
+      el.classList.add('animated');
+      donutObs.unobserve(el);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.stat-circle').forEach(el=>donutObs.observe(el));
+</script>
+</body>
+</html>
