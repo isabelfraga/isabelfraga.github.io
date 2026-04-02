@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Isabel Fraga — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#F5F5F5;--white:#FFFFFF;--ink:#1A1714;--ink-soft:#4A4540;
+  --ink-muted:#9A948E;--accent:#315CC0;--accent-light:#C8D8ED;--line:#E2DBD4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:16px;line-height:1.6;cursor:none;min-height:100vh;}
+
+.cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;transition:width .3s,height .3s,opacity .3s;}
+.cursor.hover{width:18px;height:18px;}
+.cursor-ring.hover{width:52px;height:52px;opacity:.2;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  padding:28px 60px;
+  background:rgba(245,245,245,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;transition:border-color .3s;
+}
+nav.scrolled{border-bottom-color:var(--line);}
+.nav-links{display:flex;gap:48px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-soft);text-decoration:none;letter-spacing:.04em;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a:hover::after{width:100%;}
+.nav-links a.active{color:var(--accent);}
+.nav-links a.active::after{width:100%;}
+
+/* PAGE */
+.about-page{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:120px 60px 80px;
+  max-width:1200px;margin:0 auto;
+  gap:60px;
+}
+
+/* LEFT */
+.about-left{
+  flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;animation:fadeUp .8s ease .1s forwards;
+}
+.about-greeting{
+  font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:20px;
+}
+.about-name{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(28px,3.5vw,48px);
+  font-weight:500;letter-spacing:-.03em;line-height:1.1;
+  color:var(--ink);margin-bottom:32px;
+}
+.about-name span{color:var(--accent);}
+.about-bio{
+  display:flex;flex-direction:column;gap:20px;
+}
+.about-bio p{
+  font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.8;
+}
+.about-bio strong{font-weight:500;color:var(--ink);}
+.about-bio em{font-style:italic;color:var(--accent);}
+
+/* CENTER */
+.about-center{
+  flex:0 0 300px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;animation:fadeUp .8s ease .25s forwards;
+}
+.about-photo{
+  width:300px;
+  aspect-ratio:3/4;
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--accent-light);
+}
+.about-photo img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+
+/* RIGHT */
+.about-right{
+  flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;animation:fadeUp .8s ease .4s forwards;
+}
+.hobbies-label{
+  font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:20px;
+}
+.hobbies-list{
+  display:flex;flex-direction:column;gap:12px;
+}
+.hobby-card{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:18px 20px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:var(--white);
+  transition:border-color .25s,transform .25s;
+  cursor:none;
+}
+.hobby-card:hover{
+  border-color:var(--accent);
+  transform:translateX(4px);
+}
+.hobby-emoji{
+  font-size:22px;flex-shrink:0;margin-top:1px;
+}
+.hobby-text{}
+.hobby-title{
+  font-size:14px;font-weight:500;color:var(--ink);margin-bottom:3px;
+}
+.hobby-desc{
+  font-size:12px;color:var(--ink-muted);font-weight:300;line-height:1.6;
+}
+
+/* location */
+.about-location{
+  margin-top:32px;
+  padding-top:24px;
+  border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-muted);font-weight:300;line-height:1.7;
+}
+.about-location strong{color:var(--ink);font-weight:500;}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--line);
+  padding:28px 60px;
+  display:flex;align-items:center;justify-content:center;
+}
+.footer-links{display:flex;gap:40px;list-style:none;}
+.footer-links a{font-size:12px;color:var(--ink-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s;}
+.footer-links a:hover{color:var(--accent);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:900px){
+  nav{padding:20px 24px;}
+  .nav-links{gap:24px;}
+  .about-page{flex-direction:column;padding:100px 24px 60px;gap:40px;}
+  .about-center{flex:none;}
+  .about-photo{width:100%;max-width:340px;}
+  footer{padding:24px;}
+  .footer-links{gap:20px;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <ul class="nav-links">
+    <li><a href="index.html">Work</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="Isabel-fraga-cv.pdf" download>Resume</a></li>
+  </ul>
+</nav>
+
+<!-- ABOUT -->
+<main class="about-page">
+
+  <!-- LEFT: text -->
+  <div class="about-left">
+    <p class="about-greeting">Nice to meet you</p>
+    <h1 class="about-name">Hi, I'm<br><span>Isabel Fraga.</span></h1>
+    <div class="about-bio">
+      <p>I'm a <strong>UX designer first.</strong> Not because UI doesn't matter — it does — but because no amount of beautiful pixels can fix a broken experience. I care about the <em>why</em> before the how it looks. </p>
+      <p>I'm a minimalist — in design and in life. I believe every element should earn its place. If it doesn't communicate something, it shouldn't be there.</p>
+    </div>
+  </div>
+
+  <!-- CENTER: photo -->
+  <div class="about-center">
+    <div class="about-photo">
+      <img src="me.jpg" alt="Isabel Fraga">
+    </div>
+  </div>
+
+  <!-- RIGHT: hobbies + location -->
+  <div class="about-right">
+    <p class="hobbies-label">Outside the screen</p>
+    <div class="hobbies-list">
+
+      <div class="hobby-card">
+        <span class="hobby-emoji">📖</span>
+        <div class="hobby-text">
+          <div class="hobby-title">Reading</div>
+          <div class="hobby-desc">I love fantasy and romantic literature.</div>
+        </div>
+      </div>
+
+      <div class="hobby-card">
+        <span class="hobby-emoji">✍️</span>
+        <div class="hobby-text">
+          <div class="hobby-title">Writing</div>
+          <div class="hobby-desc">I like to express myself through writing and create short stories when I feel inspired.</div>
+        </div>
+      </div>
+
+      <div class="hobby-card">
+        <span class="hobby-emoji">🩰</span>
+        <div class="hobby-text">
+          <div class="hobby-title">Pole dance</div>
+          <div class="hobby-desc">I’ve been practicing this sport for 4 years, and I love it.</div>
+        </div>
+      </div>
+
+    </div>
+
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <ul class="footer-links">
+    <li><a href="index.html">Work</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="Isabel-fraga-cv.pdf" download>Resume</a></li>
+  </ul>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,.hobby-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('hover');ring.classList.add('hover');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('hover');ring.classList.remove('hover');});
+});
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40));
+</script>
+</body>
+</html>
