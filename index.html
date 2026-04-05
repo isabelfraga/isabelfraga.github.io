@@ -189,17 +189,8 @@ footer{
 .reveal.visible{opacity:1;transform:none;}
 
 @media(max-width:700px){
-  nav{gap:0;padding:0 16px;}
-  .nav-links{gap:0;width:100%;justify-content:space-around;}
-  .nav-links li{flex:1;display:flex;justify-content:center;}
-  .nav-links a{
-    font-size:13px;
-    padding:18px 4px;
-    display:flex;align-items:center;justify-content:center;
-    min-height:56px;
-    width:100%;
-    text-align:center;
-  }
+  nav{gap:24px;padding:20px 24px;}
+  .nav-links{gap:20px;}
   #hero{padding:100px 24px 50px;min-height:55vh;}
   #projects{padding:20px 24px 80px;}
   .projects-grid{grid-template-columns:1fr;}
@@ -316,7 +307,7 @@ footer{
 <!-- CONTACT -->
 <section id="contact">
   <p class="contact-label">Get in touch</p>
-  <a href="/cdn-cgi/l/email-protection#e1888793808680d2d9d9a1868c80888dcf828e8c" class="contact-email"><span class="__cf_email__" data-cfemail="aac3ccd8cbcdcb999292eacdc7cbc3c684c9c5c7">[email&#160;protected]</span></a>
+  <a href="mailto:ifraga388@gmail.com" class="contact-email">ifraga388@gmail.com</a>
 </section>
 
 <!-- FOOTER -->
@@ -329,7 +320,7 @@ footer{
   </ul>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
@@ -344,4 +335,12 @@ const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersec
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.querySelectorAll('.project-img img').forEach(img=>{
   img.addEventListener('error',()=>img.style.display='none');
-  if(img.complete && !img.naturalWidth) img.st
+  if(img.complete && !img.naturalWidth) img.style.display='none';
+});
+document.querySelectorAll('.project-img img').forEach(img=>{
+  img.addEventListener('error',()=>img.style.display='none');
+  if(img.complete && !img.naturalWidth) img.style.display='none';
+});
+</script>
+</body>
+</html>
