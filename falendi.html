@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Falendi — Isabel Fraga</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#F5F5F5;--white:#FFFFFF;--ink:#1A1714;--ink-soft:#4A4540;
+  --ink-muted:#9A948E;--accent:#315CC0;--accent-light:#C8D8ED;--line:#E2DBD4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:16px;line-height:1.6;cursor:none;}
+@media(hover:none){body{cursor:auto;}.cursor,.cursor-ring{display:none;}}
+
+.cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;transition:width .3s,height .3s,opacity .3s;}
+.cursor.hover{width:18px;height:18px;}
+.cursor-ring.hover{width:52px;height:52px;opacity:.2;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  padding:28px 60px;
+  background:rgba(245,245,245,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;transition:border-color .3s;
+}
+nav.scrolled{border-bottom-color:var(--line);}
+.nav-links{display:flex;gap:48px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-soft);text-decoration:none;letter-spacing:.04em;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a:hover::after{width:100%;}
+
+/* HERO */
+.case-hero{
+  padding:140px 80px 80px;
+  max-width:1200px;margin:0 auto;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+}
+.case-tag{
+  font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;
+  opacity:0;animation:fadeUp .7s ease .1s forwards;
+}
+.case-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(36px,5vw,72px);
+  font-weight:500;letter-spacing:-.03em;line-height:1.05;
+  color:var(--ink);
+  margin-bottom:24px;
+  opacity:0;animation:fadeUp .7s ease .2s forwards;
+}
+.case-subtitle{
+  font-size:clamp(15px,1.5vw,18px);color:var(--ink-soft);font-weight:300;
+  max-width:620px;line-height:1.8;
+  margin-bottom:60px;
+  opacity:0;animation:fadeUp .7s ease .3s forwards;
+}
+.case-meta{
+  display:flex;gap:60px;justify-content:center;flex-wrap:wrap;
+  padding:32px 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  width:100%;
+  opacity:0;animation:fadeUp .7s ease .4s forwards;
+}
+.meta-item{text-align:center;}
+.meta-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+.meta-value{font-size:14px;font-weight:400;color:var(--ink-soft);}
+
+/* HERO IMAGE */
+.hero-img-wrap{
+  width:100%;max-width:1200px;margin:60px auto 0;padding:0 80px;
+  opacity:0;animation:fadeUp .8s ease .5s forwards;
+}
+.hero-img-box{
+  width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,#c9a97a,#a07850);
+  position:relative;
+  box-shadow:0 24px 80px rgba(0,0,0,.1);
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-img-box img{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.hero-img-box .img-label{
+  color:white;font-family:'Unbounded',sans-serif;font-size:28px;font-weight:500;letter-spacing:-.02em;
+  position:relative;z-index:1;
+}
+
+/* CONTENT */
+.case-content{
+  max-width:1200px;margin:0 auto;padding:0 80px;
+}
+
+/* SECTION */
+.case-section{
+  padding:80px 0 0;
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.case-section.visible{opacity:1;transform:none;}
+
+.section-label{
+  font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.25;}
+
+.section-heading{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(24px,3vw,40px);font-weight:500;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:24px;line-height:1.15;
+}
+.section-body{
+  font-size:15px;color:var(--ink-soft);line-height:1.85;font-weight:300;
+  max-width:720px;
+}
+.section-body + .section-body{margin-top:16px;}
+
+/* OVERVIEW CARDS */
+.overview-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin:40px 0;
+}
+.overview-card{
+  background:var(--white);border-radius:10px;padding:28px;
+  border:1px solid var(--line);
+}
+.overview-card-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px;}
+.overview-card-value{font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.7;}
+
+/* FLOW TABLE */
+.problems-table{width:100%;margin:40px 0;border-collapse:collapse;}
+.problems-table th{
+  font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-muted);padding:0 0 12px;text-align:left;
+  border-bottom:1px solid var(--line);
+}
+.problems-table td{
+  font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.7;
+  padding:20px 40px 20px 0;vertical-align:top;
+  border-bottom:1px solid var(--line);
+}
+.problems-table td:first-child{font-weight:500;color:var(--ink);width:28%;}
+
+/* CLIENTS */
+.clients-row{
+  display:flex;flex-wrap:wrap;gap:12px;margin:32px 0;
+}
+.client-tag{
+  font-size:12px;font-weight:500;letter-spacing:.06em;
+  color:var(--ink-soft);background:var(--white);
+  border:1px solid var(--line);border-radius:100px;
+  padding:8px 20px;
+}
+
+/* UNDER CONSTRUCTION */
+.construction-wrap{
+  padding:100px 0 120px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  border-top:1px solid var(--line);
+  margin-top:80px;
+}
+.construction-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);background:var(--accent-light);
+  border-radius:100px;padding:10px 20px;
+  margin-bottom:32px;
+}
+.construction-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--accent);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+
+.construction-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(28px,3.5vw,48px);
+  font-weight:500;letter-spacing:-.03em;line-height:1.1;
+  color:var(--ink);margin-bottom:20px;
+}
+.construction-sub{
+  font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.8;
+  max-width:500px;margin:0 auto 48px;
+}
+.construction-line{
+  width:60px;height:1px;background:var(--line);margin:0 auto;
+}
+
+/* CASE NAV */
+.case-nav{
+  max-width:1200px;margin:100px auto 0;padding:40px 80px 60px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--line);
+}
+.case-nav-link{text-decoration:none;display:flex;flex-direction:column;gap:4px;}
+.case-nav-link.next{text-align:right;}
+.case-nav-dir{font-size:11px;color:var(--ink-muted);letter-spacing:.08em;text-transform:uppercase;}
+.case-nav-name{font-family:'Unbounded',sans-serif;font-size:15px;font-weight:500;color:var(--ink);letter-spacing:-.01em;transition:color .2s;}
+.case-nav-link:hover .case-nav-name{color:var(--accent);}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--line);
+  padding:28px 60px;
+  display:flex;align-items:center;justify-content:center;gap:48px;
+}
+.footer-links{display:flex;gap:40px;list-style:none;}
+.footer-links a{font-size:12px;color:var(--ink-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s;}
+.footer-links a:hover{color:var(--accent);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:700px){
+  nav{padding:20px 24px;}
+  .nav-links{gap:20px;}
+  .case-hero{padding:100px 24px 60px;}
+  .hero-img-wrap{padding:0 24px;margin-top:40px;}
+  .case-content{padding:0 24px;}
+  .case-meta{gap:32px;}
+  .overview-grid{grid-template-columns:1fr;}
+  .case-nav{padding:40px 24px 60px;flex-direction:column;gap:32px;align-items:flex-start;}
+  footer{padding:24px;gap:24px;}
+  .footer-links{gap:20px;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <ul class="nav-links">
+    <li><a href="index.html#projects">Work</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="/isabel-fraga-cv.pdf" download>Resume</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="case-hero">
+  <p class="case-tag">Web Platform · B2B · Legal & Financial</p>
+  <h1 class="case-title">Falendi</h1>
+  <p class="case-subtitle">A legal and financial audit platform designed to simplify compliance workflows for enterprise clients across Europe.</p>
+  <div class="case-meta">
+    <div class="meta-item">
+      <div class="meta-label">Role</div>
+      <div class="meta-value">UX/UI Designer</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Type</div>
+      <div class="meta-value">Web App · B2B</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Tools</div>
+      <div class="meta-value">Figma</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Year</div>
+      <div class="meta-value">2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO IMAGE -->
+<div class="hero-img-wrap">
+  <div class="hero-img-box">
+    <img src="falendi.jpg" alt="Falendi platform">
+    <span class="img-label">Falendi</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="case-content">
+
+  <!-- OVERVIEW -->
+  <div class="case-section reveal">
+    <p class="section-label">Overview</p>
+    <h2 class="section-heading">From scattered documents to structured audit intelligence</h2>
+    <p class="section-body">Falendi is a B2B legal and financial audit platform designed for firms that audit large enterprises. Auditors manage a portfolio of client companies — KPMG, Carrefour, Coinbase — and for each client they run multiple audits per year, categorised as Juridiques, Comptables, or Financiers.</p>
+    <p class="section-body" style="margin-top:16px;">The platform guides the auditor through the entire workflow: configuring audit parameters (type, date range, legal thresholds like chiffre d'affaires, effectifs, total bilan actif), uploading the required legal documents (Kbis, Comptes sociaux, Rapports CAC, Actes, RBE, Statuts...), then triggering an AI-powered analysis that processes each document in real time and surfaces a structured output — flagged anomalies, legal article references, capital calculations, and an executive summary.</p>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-card-label">Challenge</div>
+        <div class="overview-card-value">Audit teams were juggling documents across email, spreadsheets, and shared drives. No single tool connected document collection, legal thresholds, and structured output in one place.</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-label">Approach</div>
+        <div class="overview-card-value">Mapping the full 6-step audit flow end-to-end — from project dashboard to live AI processing — and designing for clarity, trust, and error prevention at each stage.</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-label">Outcome</div>
+        <div class="overview-card-value">A professional-grade web platform that turns a multi-day audit process into a guided, repeatable workflow with structured, legally-referenced results.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<!-- UNDER CONSTRUCTION -->
+<div class="construction-wrap reveal">
+  <div class="construction-badge">
+    <span class="construction-dot"></span>
+    Case study in progress
+  </div>
+  <h2 class="construction-title">Full write-up coming soon</h2>
+  <p class="construction-sub">I'm currently documenting the process, research, and design decisions behind this project. Check back soon.</p>
+  <div class="construction-line"></div>
+</div>
+
+<!-- PREV / NEXT -->
+<div class="case-nav">
+  <a href="index.html" class="case-nav-link prev">
+    <span class="case-nav-dir">← Back</span>
+    <span class="case-nav-name">All Work</span>
+  </a>
+  <a href="aptivio.html" class="case-nav-link next">
+    <span class="case-nav-dir">Next →</span>
+    <span class="case-nav-name">Aptivio</span>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <ul class="footer-links">
+    <li><a href="index.html">Work</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="/isabel-fraga-cv.pdf" download>Resume</a></li>
+  </ul>
+</footer>
+
+<script>
+const heroImg = document.querySelector('.hero-img-box img');
+if(heroImg){
+  heroImg.addEventListener('load',()=>{
+    const label=heroImg.nextElementSibling;
+    if(label) label.style.display='none';
+  });
+  heroImg.addEventListener('error',()=>heroImg.style.display='none');
+  if(heroImg.complete && heroImg.naturalWidth){
+    const label=heroImg.nextElementSibling;
+    if(label) label.style.display='none';
+  }
+}
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('hover');ring.classList.add('hover');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('hover');ring.classList.remove('hover');});
+});
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40));
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
